@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>File Read API</title>
+</head>
+<body>
+
+	<p>Enter File: <input id="file" type="file" multiple/> </p>
+
+	<p>
+		<div id="destination"></div>
+	</p>
+
+	<script type="text/javascript">
+		document.querySelector('#file').onchange = function() {
+			des = document.querySelector("#destination")
+		
+			des.innerHTML = '';
+
+			for(i = 0,len = this.files.length; i < len; i++)
+			{
+				file = this.files[i];
+
+				if(file.type.indexOf('image') != -1) // if image
+				{
+					var reader = new FileReader()
+
+					reader.onload = function(e) {
+						var img = new Image();
+
+						img.src = e.target.result;
+
+						des.appendChild(img)
+					}
+
+					reader.readAsDataURL(file);
+				}
+			}
+
+		}
+	</script>
+
+</body>
+</html>
