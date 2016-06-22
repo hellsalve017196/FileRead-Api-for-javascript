@@ -12,6 +12,21 @@
 	</p>
 
 	<script type="text/javascript">
+		function processData(csv)  // parsing
+		{
+	        var allTextLines = csv.split(/\r\n|\n/);
+	        var lines = [];
+	        for (var i=0; i<allTextLines.length; i++) {
+	            var data = allTextLines[i].split(';');
+	                var tarr = [];
+	                for (var j=0; j<data.length; j++) {
+	                    tarr.push(data[j]);
+	                }
+	                lines.push(tarr);
+	        }
+	      console.log(lines);
+    	}
+
 		document.querySelector('#file').onchange = function() {
 			des = document.querySelector("#destination")
 		
@@ -28,12 +43,27 @@
 					reader.onload = function(e) {
 						var img = new Image();
 
-						img.src = e.target.result;
+						img.src = e.target.result; // fetching image
 
 						des.appendChild(img)
 					}
 
 					reader.readAsDataURL(file);
+				}
+				else if(file.type.indexOf('text') != -1) {
+					var reader = new FileReader();
+
+					reader.onload = function(e) {
+						des.innerHTML = e.target.result; // fetching text
+					
+						processData(e.target.result);	
+					}
+
+					reader.onerror = function(e) {
+						console.log(e)
+					}
+
+					reader.readAsText(file)
 				}
 			}
 
